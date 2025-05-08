@@ -29,7 +29,7 @@ Make a histogram of the total number of steps taken per day:
 ```{r}
 library(ggplot2)
 ggplot(data = steps_per_day) +
-  geom_histogram(aes(steps), binwidth = 1000, fill = "deepskyblue4", col = "darkblue") +
+  geom_histogram(aes(steps), binwidth = 500, fill = "deepskyblue4", col = "darkblue") +
   ggtitle("Total Number of Steps Taken Per Day")
 ```
 
@@ -45,7 +45,7 @@ Make a time-series plot of the 5-minute interval (x-axis) and the average number
 activity_per_interval <- aggregate(steps~interval, activity_noNA, mean)
 ggplot(data = activity_per_interval) + 
   geom_line(aes(interval,steps)) +
-  ggtitle("Average Number of Steps Taken per Interval")
+  ggtitle("Average Steps Taken per Interval")
 ```
 
 Which 5-minute interval, on average across all days in the dataset, contains the maximmum number of steps?
@@ -71,7 +71,7 @@ Make a histogram of the total number of steps taken each day and Calculate and r
 ```{r}
 activity_complete2 <- aggregate(steps~date, activity_complete, sum)
 ggplot(data = activity_complete2) +
-  geom_histogram(aes(steps), binwidth = 1000, fill = 'darkgoldenrod', col = 'darkgoldenrod4') +
+  geom_histogram(aes(steps), binwidth = 500, fill = 'darkgoldenrod', col = 'darkgoldenrod4') +
   ggtitle("Total Number of Steps Taken Each Day (Missing Values Added)")
 mean(activity_complete2$steps)
 median(activity_complete2$steps)
@@ -85,11 +85,11 @@ library(tidyverse)
 ```
 ```{r}
 activity_complete$daytype <- ifelse(weekdays(activity_complete$date) %in% c("Saturday", "Sunday"), 
-                              "weekend", "weekday")
+                              "Weekend", "Weekday")
 activity_complete3 <- activity_complete %>% group_by(interval, daytype) %>% summarise(meanSteps = mean(steps))
 head(activity_complete3)
 ```
 Make a panel plot containing a time-series plot of the 5-minute interval (x-axis) and the average number of steps taken, averaged across all weekday days or weekend days (y-axis):
 ```{r}
-ggplot(data = activity_complete3, color = daytype) + geom_line(aes(interval,meanSteps)) + facet_grid(daytype~.)
+ggplot(data = activity_complete3, color = daytype, main = "Plot of Weekdays vs Weekend") + geom_line(aes(interval,meanSteps)) + facet_grid(daytype~.)
 ```
